@@ -20,6 +20,7 @@
     "Grbl": {
         "activeState": {
             "idle": "Idle",
+            "jog": "Koşu",
             "run": "Çalışıyor",
             "hold": "Kilitle",
             "door": "Kapı",

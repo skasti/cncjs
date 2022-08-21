@@ -11,45 +11,46 @@ import controller from 'app/lib/controller';
 import i18n from 'app/lib/i18n';
 import * as WebGL from 'app/lib/three/WebGL';
 import {
-  // Grbl
-  GRBL,
-  GRBL_ACTIVE_STATE_IDLE,
-  GRBL_ACTIVE_STATE_RUN,
-  GRBL_ACTIVE_STATE_HOLD,
-  GRBL_ACTIVE_STATE_DOOR,
-  GRBL_ACTIVE_STATE_HOME,
-  GRBL_ACTIVE_STATE_SLEEP,
-  GRBL_ACTIVE_STATE_ALARM,
-  GRBL_ACTIVE_STATE_CHECK,
-  // Marlin
-  MARLIN,
-  // Smoothie
-  SMOOTHIE,
-  SMOOTHIE_ACTIVE_STATE_IDLE,
-  SMOOTHIE_ACTIVE_STATE_RUN,
-  SMOOTHIE_ACTIVE_STATE_HOLD,
-  SMOOTHIE_ACTIVE_STATE_DOOR,
-  SMOOTHIE_ACTIVE_STATE_HOME,
-  SMOOTHIE_ACTIVE_STATE_ALARM,
-  SMOOTHIE_ACTIVE_STATE_CHECK,
-  // TinyG
-  TINYG,
-  TINYG_MACHINE_STATE_INITIALIZING,
-  TINYG_MACHINE_STATE_READY,
-  TINYG_MACHINE_STATE_ALARM,
-  TINYG_MACHINE_STATE_STOP,
-  TINYG_MACHINE_STATE_END,
-  TINYG_MACHINE_STATE_RUN,
-  TINYG_MACHINE_STATE_HOLD,
-  TINYG_MACHINE_STATE_PROBE,
-  TINYG_MACHINE_STATE_CYCLE,
-  TINYG_MACHINE_STATE_HOMING,
-  TINYG_MACHINE_STATE_JOG,
-  TINYG_MACHINE_STATE_INTERLOCK,
-  TINYG_MACHINE_STATE_SHUTDOWN,
-  TINYG_MACHINE_STATE_PANIC,
-  // Workflow
-  WORKFLOW_STATE_IDLE
+    // Grbl
+    GRBL,
+    GRBL_ACTIVE_STATE_IDLE,
+    GRBL_ACTIVE_STATE_RUN,
+    GRBL_ACTIVE_STATE_HOLD,
+    GRBL_ACTIVE_STATE_DOOR,
+    GRBL_ACTIVE_STATE_HOME,
+    GRBL_ACTIVE_STATE_SLEEP,
+    GRBL_ACTIVE_STATE_ALARM,
+    GRBL_ACTIVE_STATE_CHECK,
+    GRBL_ACTIVE_STATE_JOG,
+    // Marlin
+    MARLIN,
+    // Smoothie
+    SMOOTHIE,
+    SMOOTHIE_ACTIVE_STATE_IDLE,
+    SMOOTHIE_ACTIVE_STATE_RUN,
+    SMOOTHIE_ACTIVE_STATE_HOLD,
+    SMOOTHIE_ACTIVE_STATE_DOOR,
+    SMOOTHIE_ACTIVE_STATE_HOME,
+    SMOOTHIE_ACTIVE_STATE_ALARM,
+    SMOOTHIE_ACTIVE_STATE_CHECK,
+    // TinyG
+    TINYG,
+    TINYG_MACHINE_STATE_INITIALIZING,
+    TINYG_MACHINE_STATE_READY,
+    TINYG_MACHINE_STATE_ALARM,
+    TINYG_MACHINE_STATE_STOP,
+    TINYG_MACHINE_STATE_END,
+    TINYG_MACHINE_STATE_RUN,
+    TINYG_MACHINE_STATE_HOLD,
+    TINYG_MACHINE_STATE_PROBE,
+    TINYG_MACHINE_STATE_CYCLE,
+    TINYG_MACHINE_STATE_HOMING,
+    TINYG_MACHINE_STATE_JOG,
+    TINYG_MACHINE_STATE_INTERLOCK,
+    TINYG_MACHINE_STATE_SHUTDOWN,
+    TINYG_MACHINE_STATE_PANIC,
+    // Workflow
+    WORKFLOW_STATE_IDLE
 } from 'app/constants';
 import styles from './index.styl';
 
@@ -97,28 +98,30 @@ class PrimaryToolbar extends PureComponent {
       if (controllerType === GRBL) {
         const activeState = _.get(controllerState, 'status.activeState');
 
-        stateStyle = {
-          [GRBL_ACTIVE_STATE_IDLE]: 'controller-state-default',
-          [GRBL_ACTIVE_STATE_RUN]: 'controller-state-primary',
-          [GRBL_ACTIVE_STATE_HOLD]: 'controller-state-warning',
-          [GRBL_ACTIVE_STATE_DOOR]: 'controller-state-warning',
-          [GRBL_ACTIVE_STATE_HOME]: 'controller-state-primary',
-          [GRBL_ACTIVE_STATE_SLEEP]: 'controller-state-success',
-          [GRBL_ACTIVE_STATE_ALARM]: 'controller-state-danger',
-          [GRBL_ACTIVE_STATE_CHECK]: 'controller-state-info'
-        }[activeState];
+            stateStyle = {
+                [GRBL_ACTIVE_STATE_IDLE]: 'controller-state-default',
+                [GRBL_ACTIVE_STATE_JOG]: 'controller-state-default',
+                [GRBL_ACTIVE_STATE_RUN]: 'controller-state-primary',
+                [GRBL_ACTIVE_STATE_HOLD]: 'controller-state-warning',
+                [GRBL_ACTIVE_STATE_DOOR]: 'controller-state-warning',
+                [GRBL_ACTIVE_STATE_HOME]: 'controller-state-primary',
+                [GRBL_ACTIVE_STATE_SLEEP]: 'controller-state-success',
+                [GRBL_ACTIVE_STATE_ALARM]: 'controller-state-danger',
+                [GRBL_ACTIVE_STATE_CHECK]: 'controller-state-info'
+            }[activeState];
 
-        stateText = {
-          [GRBL_ACTIVE_STATE_IDLE]: i18n.t('controller:Grbl.activeState.idle'),
-          [GRBL_ACTIVE_STATE_RUN]: i18n.t('controller:Grbl.activeState.run'),
-          [GRBL_ACTIVE_STATE_HOLD]: i18n.t('controller:Grbl.activeState.hold'),
-          [GRBL_ACTIVE_STATE_DOOR]: i18n.t('controller:Grbl.activeState.door'),
-          [GRBL_ACTIVE_STATE_HOME]: i18n.t('controller:Grbl.activeState.home'),
-          [GRBL_ACTIVE_STATE_SLEEP]: i18n.t('controller:Grbl.activeState.sleep'),
-          [GRBL_ACTIVE_STATE_ALARM]: i18n.t('controller:Grbl.activeState.alarm'),
-          [GRBL_ACTIVE_STATE_CHECK]: i18n.t('controller:Grbl.activeState.check')
-        }[activeState];
-      }
+            stateText = {
+                [GRBL_ACTIVE_STATE_IDLE]: i18n.t('controller:Grbl.activeState.idle'),
+                [GRBL_ACTIVE_STATE_JOG]: i18n.t('controller:Grbl.activeState.jog'),
+                [GRBL_ACTIVE_STATE_RUN]: i18n.t('controller:Grbl.activeState.run'),
+                [GRBL_ACTIVE_STATE_HOLD]: i18n.t('controller:Grbl.activeState.hold'),
+                [GRBL_ACTIVE_STATE_DOOR]: i18n.t('controller:Grbl.activeState.door'),
+                [GRBL_ACTIVE_STATE_HOME]: i18n.t('controller:Grbl.activeState.home'),
+                [GRBL_ACTIVE_STATE_SLEEP]: i18n.t('controller:Grbl.activeState.sleep'),
+                [GRBL_ACTIVE_STATE_ALARM]: i18n.t('controller:Grbl.activeState.alarm'),
+                [GRBL_ACTIVE_STATE_CHECK]: i18n.t('controller:Grbl.activeState.check')
+            }[activeState];
+        }
 
       if (controllerType === MARLIN) {
         // Marlin does not have machine state

@@ -20,6 +20,7 @@
     "Grbl": {
         "activeState": {
             "idle": "stationair",
+            "jog": "joggen",
             "run": "bezig",
             "hold": "pauze",
             "door": "deur",

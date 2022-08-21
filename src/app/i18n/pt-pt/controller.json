@@ -20,6 +20,7 @@
     "Grbl": {
         "activeState": {
             "idle": "Inativo",
+            "jog": "cooper",
             "run": "Correr",
             "hold": "Pausar",
             "door": "Porta",

@@ -21,29 +21,30 @@ import KeypadOverlay from './KeypadOverlay';
 import Settings from './Settings';
 import ShuttleControl from './ShuttleControl';
 import {
-  // Units
-  IMPERIAL_UNITS,
-  IMPERIAL_STEPS,
-  METRIC_UNITS,
-  METRIC_STEPS,
-  // Grbl
-  GRBL,
-  GRBL_ACTIVE_STATE_IDLE,
-  GRBL_ACTIVE_STATE_RUN,
-  // Marlin
-  MARLIN,
-  // Smoothie
-  SMOOTHIE,
-  SMOOTHIE_ACTIVE_STATE_IDLE,
-  SMOOTHIE_ACTIVE_STATE_RUN,
-  // TinyG
-  TINYG,
-  TINYG_MACHINE_STATE_READY,
-  TINYG_MACHINE_STATE_STOP,
-  TINYG_MACHINE_STATE_END,
-  TINYG_MACHINE_STATE_RUN,
-  // Workflow
-  WORKFLOW_STATE_RUNNING
+    // Units
+    IMPERIAL_UNITS,
+    IMPERIAL_STEPS,
+    METRIC_UNITS,
+    METRIC_STEPS,
+    // Grbl
+    GRBL,
+    GRBL_ACTIVE_STATE_IDLE,
+    GRBL_ACTIVE_STATE_JOG,
+    GRBL_ACTIVE_STATE_RUN,
+    // Marlin
+    MARLIN,
+    // Smoothie
+    SMOOTHIE,
+    SMOOTHIE_ACTIVE_STATE_IDLE,
+    SMOOTHIE_ACTIVE_STATE_RUN,
+    // TinyG
+    TINYG,
+    TINYG_MACHINE_STATE_READY,
+    TINYG_MACHINE_STATE_STOP,
+    TINYG_MACHINE_STATE_END,
+    TINYG_MACHINE_STATE_RUN,
+    // Workflow
+    WORKFLOW_STATE_RUNNING
 } from '../../constants';
 import {
   MODAL_NONE,
@@ -175,69 +176,70 @@ class AxesWidget extends PureComponent {
         axis = (axis || '').toUpperCase();
         value = Number(value) || 0;
 
-        const gcode = `G10 L20 P${p} ${axis}${value}`;
-        controller.command('gcode', gcode);
-      },
-      jog: (params = {}) => {
-        const s = map(params, (value, letter) => ('' + letter.toUpperCase() + value)).join(' ');
-        controller.command('gcode', 'G91'); // relative
-        controller.command('gcode', 'G0 ' + s);
-        controller.command('gcode', 'G90'); // absolute
-      },
-      move: (params = {}) => {
-        const s = map(params, (value, letter) => ('' + letter.toUpperCase() + value)).join(' ');
-        controller.command('gcode', 'G0 ' + s);
-      },
-      toggleMDIMode: () => {
-        this.setState(state => ({
-          mdi: {
-            ...state.mdi,
-            disabled: !state.mdi.disabled
-          }
-        }));
-      },
-      toggleKeypadJogging: () => {
-        this.setState(state => ({
-          jog: {
-            ...state.jog,
-            keypad: !state.jog.keypad
-          }
-        }));
-      },
-      selectAxis: (axis = '') => {
-        this.setState(state => ({
-          jog: {
-            ...state.jog,
-            axis: axis
-          }
-        }));
-      },
-      selectStep: (value = '') => {
-        const step = Number(value);
-        this.setState(state => ({
-          jog: {
-            ...state.jog,
-            imperial: {
-              ...state.jog.imperial,
-              step: (state.units === IMPERIAL_UNITS) ? step : state.jog.imperial.step,
-            },
-            metric: {
-              ...state.jog.metric,
-              step: (state.units === METRIC_UNITS) ? step : state.jog.metric.step
-            }
-          }
-        }));
-      },
-      stepForward: () => {
-        this.setState(state => {
-          const imperialJogSteps = [
-            ...state.jog.imperial.distances,
-            ...IMPERIAL_STEPS
-          ];
-          const metricJogSteps = [
-            ...state.jog.metric.distances,
-            ...METRIC_STEPS
-          ];
+            const gcode = `G10 L20 P${p} ${axis}${value}`;
+            controller.command('gcode', gcode);
+        },
+        jog: (params = {}) => {
+            const s = map(params, (value, letter) => ('' + letter.toUpperCase() + value)).join(' ');
+            controller.command('gcode:jog', 'G91' + s); // JOG relative
+        },
+        jogStop: (params = {}) => {
+            controller.command('gcode:jogStop'); // JOG STOP
+        },
+        move: (params = {}) => {
+            const s = map(params, (value, letter) => ('' + letter.toUpperCase() + value)).join(' ');
+            controller.command('gcode', 'G0 ' + s);
+        },
+        toggleMDIMode: () => {
+            this.setState(state => ({
+                mdi: {
+                    ...state.mdi,
+                    disabled: !state.mdi.disabled
+                }
+            }));
+        },
+        toggleKeypadJogging: () => {
+            this.setState(state => ({
+                jog: {
+                    ...state.jog,
+                    keypad: !state.jog.keypad
+                }
+            }));
+        },
+        selectAxis: (axis = '') => {
+            this.setState(state => ({
+                jog: {
+                    ...state.jog,
+                    axis: axis
+                }
+            }));
+        },
+        selectStep: (value = '') => {
+            const step = Number(value);
+            this.setState(state => ({
+                jog: {
+                    ...state.jog,
+                    imperial: {
+                        ...state.jog.imperial,
+                        step: (state.units === IMPERIAL_UNITS) ? step : state.jog.imperial.step,
+                    },
+                    metric: {
+                        ...state.jog.metric,
+                        step: (state.units === METRIC_UNITS) ? step : state.jog.metric.step
+                    }
+                }
+            }));
+        },
+        stepForward: () => {
+            this.setState(state => {
+                const imperialJogSteps = [
+                    ...state.jog.imperial.distances,
+                    ...IMPERIAL_STEPS
+                ];
+                const metricJogSteps = [
+                    ...state.jog.metric.distances,
+                    ...METRIC_STEPS
+                ];
 
           return {
             jog: {
@@ -362,19 +364,22 @@ class AxesWidget extends PureComponent {
           c: () => this.actions.jog({ C: direction * distance * factor })
         }[axis];
 
-        jogAxis && jogAxis();
-      },
-      JOG_LEVER_SWITCH: (event, { key = '' }) => {
-        if (key === '-') {
-          this.actions.stepBackward();
-        } else if (key === '+') {
-          this.actions.stepForward();
-        } else {
-          this.actions.stepNext();
-        }
-      },
-      SHUTTLE: (event, { zone = 0 }) => {
-        const { canClick, jog } = this.state;
+            jogAxis && jogAxis();
+        },
+        JOG_STOP: (event, {}) => {
+            this.actions.jogStop();
+        },
+        JOG_LEVER_SWITCH: (event, { key = '' }) => {
+            if (key === '-') {
+                this.actions.stepBackward();
+            } else if (key === '+') {
+                this.actions.stepForward();
+            } else {
+                this.actions.stepNext();
+            }
+        },
+        SHUTTLE: (event, { zone = 0 }) => {
+            const { canClick, jog } = this.state;
 
         if (!canClick) {
           return;
@@ -739,50 +744,51 @@ class AxesWidget extends PureComponent {
       const controllerType = this.state.controller.type;
       const controllerState = this.state.controller.state;
 
-      if (!port) {
-        return false;
-      }
-      if (workflow.state === WORKFLOW_STATE_RUNNING) {
-        return false;
-      }
-      if (!includes([GRBL, MARLIN, SMOOTHIE, TINYG], controllerType)) {
-        return false;
-      }
-      if (controllerType === GRBL) {
-        const activeState = get(controllerState, 'status.activeState');
-        const states = [
-          GRBL_ACTIVE_STATE_IDLE,
-          GRBL_ACTIVE_STATE_RUN
-        ];
-        if (!includes(states, activeState)) {
-          return false;
+        if (!port) {
+            return false;
         }
-      }
-      if (controllerType === MARLIN) {
-        // Ignore
-      }
-      if (controllerType === SMOOTHIE) {
-        const activeState = get(controllerState, 'status.activeState');
-        const states = [
-          SMOOTHIE_ACTIVE_STATE_IDLE,
-          SMOOTHIE_ACTIVE_STATE_RUN
-        ];
-        if (!includes(states, activeState)) {
-          return false;
+        if (workflow.state === WORKFLOW_STATE_RUNNING) {
+            return false;
         }
-      }
-      if (controllerType === TINYG) {
-        const machineState = get(controllerState, 'sr.machineState');
-        const states = [
-          TINYG_MACHINE_STATE_READY,
-          TINYG_MACHINE_STATE_STOP,
-          TINYG_MACHINE_STATE_END,
-          TINYG_MACHINE_STATE_RUN
-        ];
-        if (!includes(states, machineState)) {
-          return false;
+        if (!includes([GRBL, MARLIN, SMOOTHIE, TINYG], controllerType)) {
+            return false;
         }
-      }
+        if (controllerType === GRBL) {
+            const activeState = get(controllerState, 'status.activeState');
+            const states = [
+                GRBL_ACTIVE_STATE_IDLE,
+                GRBL_ACTIVE_STATE_RUN,
+                GRBL_ACTIVE_STATE_JOG
+            ];
+            if (!includes(states, activeState)) {
+                return false;
+            }
+        }
+        if (controllerType === MARLIN) {
+            // Ignore
+        }
+        if (controllerType === SMOOTHIE) {
+            const activeState = get(controllerState, 'status.activeState');
+            const states = [
+                SMOOTHIE_ACTIVE_STATE_IDLE,
+                SMOOTHIE_ACTIVE_STATE_RUN
+            ];
+            if (!includes(states, activeState)) {
+                return false;
+            }
+        }
+        if (controllerType === TINYG) {
+            const machineState = get(controllerState, 'sr.machineState');
+            const states = [
+                TINYG_MACHINE_STATE_READY,
+                TINYG_MACHINE_STATE_STOP,
+                TINYG_MACHINE_STATE_END,
+                TINYG_MACHINE_STATE_RUN
+            ];
+            if (!includes(states, machineState)) {
+                return false;
+            }
+        }
 
       return true;
     }

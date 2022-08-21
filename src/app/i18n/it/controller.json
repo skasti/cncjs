@@ -20,6 +20,7 @@
     "Grbl": {
         "activeState": {
             "idle": "Inattivo",
+            "jog": "Jogging",
             "run": "Movimento",
             "hold": "Pausa",
             "door": "Finecorsa",
