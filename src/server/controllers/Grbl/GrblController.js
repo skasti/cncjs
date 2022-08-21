@@ -1303,6 +1303,17 @@ class GrblController {
                     this.feeder.next();
                 }
             },
+            'gcode:jog': () => {
+                const [command] = args;
+                this.writeln('$J=' + command);
+            },
+            'gcode:jogStop': async () => {
+                activeState = _.get(this.state, 'status.activeState', '');
+                if (activeState === GRBL_ACTIVE_STATE_JOG) {
+                    this.event.trigger('gcode:jogStop');
+                    this.write('\x85'); // JOG STOP
+                }
+            },
             'macro:run': () => {
                 let [id, context = {}, callback = noop] = args;
                 if (typeof context === 'function') {

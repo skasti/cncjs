@@ -24,6 +24,21 @@ test('GrblLineParserResultStatus: all zeroes in the mask ($10=0)', (t) => {
     runner.parse(line);
 });
 
+test('GrblLineParserResultStatus: detects JOG state', (t) => {
+    const runner = new GrblRunner();
+    runner.on('status', ({ raw, ...status }) => {
+        t.equal(raw, '<Jog>');
+        t.same(status, {
+            activeState: 'Jog',
+            subState: 0
+        });
+        t.end();
+    });
+
+    const line = '<Jog>';
+    runner.parse(line);
+});
+
 test('GrblLineParserResultStatus: default ($10=3)', (t) => {
     const runner = new GrblRunner();
     runner.on('status', ({ raw, ...status }) => {

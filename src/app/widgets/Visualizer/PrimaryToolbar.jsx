@@ -21,6 +21,7 @@ import {
     GRBL_ACTIVE_STATE_SLEEP,
     GRBL_ACTIVE_STATE_ALARM,
     GRBL_ACTIVE_STATE_CHECK,
+    GRBL_ACTIVE_STATE_JOG,
     // Marlin
     MARLIN,
     // Smoothie
@@ -99,6 +100,7 @@ class PrimaryToolbar extends PureComponent {
 
             stateStyle = {
                 [GRBL_ACTIVE_STATE_IDLE]: 'controller-state-default',
+                [GRBL_ACTIVE_STATE_JOG]: 'controller-state-default',
                 [GRBL_ACTIVE_STATE_RUN]: 'controller-state-primary',
                 [GRBL_ACTIVE_STATE_HOLD]: 'controller-state-warning',
                 [GRBL_ACTIVE_STATE_DOOR]: 'controller-state-warning',
@@ -110,6 +112,7 @@ class PrimaryToolbar extends PureComponent {
 
             stateText = {
                 [GRBL_ACTIVE_STATE_IDLE]: i18n.t('controller:Grbl.activeState.idle'),
+                [GRBL_ACTIVE_STATE_JOG]: i18n.t('controller:Grbl.activeState.jog'),
                 [GRBL_ACTIVE_STATE_RUN]: i18n.t('controller:Grbl.activeState.run'),
                 [GRBL_ACTIVE_STATE_HOLD]: i18n.t('controller:Grbl.activeState.hold'),
                 [GRBL_ACTIVE_STATE_DOOR]: i18n.t('controller:Grbl.activeState.door'),

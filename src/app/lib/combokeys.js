@@ -110,13 +110,19 @@ const commandKeys = [
         preventDefault: true
     },
     { // Jog Backward (Alias)
-        keys: ['ctrl', 'alt', 'command', 'b'].join('+'),
+        keys: ['ctrl', 'alt', 'command', 'd'].join('+'),
         cmd: 'JOG',
         payload: {
             axis: null,
             direction: BACKWARD,
             factor: 1
         },
+        preventDefault: true
+    },
+    { // Jog Stop
+        keys: ['ctrl', 'alt', 'command', 's'].join('+'),
+        cmd: 'JOG_STOP',
+        payload: { },
         preventDefault: true
     },
     { // Jog X+

@@ -21,6 +21,7 @@
         "activeState": {
             "idle": "",
             "run": "",
+            "jog": "",
             "hold": "",
             "door": "",
             "home": "",

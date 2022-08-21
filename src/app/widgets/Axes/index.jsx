@@ -29,6 +29,7 @@ import {
     // Grbl
     GRBL,
     GRBL_ACTIVE_STATE_IDLE,
+    GRBL_ACTIVE_STATE_JOG,
     GRBL_ACTIVE_STATE_RUN,
     // Marlin
     MARLIN,
@@ -180,9 +181,10 @@ class AxesWidget extends PureComponent {
         },
         jog: (params = {}) => {
             const s = map(params, (value, letter) => ('' + letter.toUpperCase() + value)).join(' ');
-            controller.command('gcode', 'G91'); // relative
-            controller.command('gcode', 'G0 ' + s);
-            controller.command('gcode', 'G90'); // absolute
+            controller.command('gcode:jog', 'G91' + s); // JOG relative
+        },
+        jogStop: (params = {}) => {
+            controller.command('gcode:jogStop'); // JOG STOP
         },
         move: (params = {}) => {
             const s = map(params, (value, letter) => ('' + letter.toUpperCase() + value)).join(' ');
@@ -363,6 +365,9 @@ class AxesWidget extends PureComponent {
             }[axis];
 
             jogAxis && jogAxis();
+        },
+        JOG_STOP: (event, {}) => {
+            this.actions.jogStop();
         },
         JOG_LEVER_SWITCH: (event, { key = '' }) => {
             if (key === '-') {
@@ -752,7 +757,8 @@ class AxesWidget extends PureComponent {
             const activeState = get(controllerState, 'status.activeState');
             const states = [
                 GRBL_ACTIVE_STATE_IDLE,
-                GRBL_ACTIVE_STATE_RUN
+                GRBL_ACTIVE_STATE_RUN,
+                GRBL_ACTIVE_STATE_JOG
             ];
             if (!includes(states, activeState)) {
                 return false;
