@@ -189,17 +189,20 @@ class GrblController {
         }
       });
 
-      // Feeder
-      this.feeder = new Feeder({
-        dataFilter: (line, context) => {
-          const originalLine = line;
-          /**
-           * line = 'G0X10 ; comment text'
-           * parts = ['G0X10 ', ' comment text', '']
-           */
-          const parts = originalLine.split(/;(.*)/s); // `s` is the modifier for single-line mode
-          line = ensureString(parts[0]).trim();
-          context = this.populateContext(context);
+        // Feeder
+        this.feeder = new Feeder({
+            dataFilter: (line, context) => {
+                context = this.populateContext(context);
+                // line="G0 X[posx - 8] Y[ymax] ; some comment"
+                // > "G0 X2 Y50 ; some comment"
+                const originalLine = translateExpression(line, context);
+                /**
+                 * line = 'G0 X2 Y50 ; some comment'
+                 * parts = ['G0 X2 Y50 ', ' some comment', '']
+                 */
+                const parts = originalLine.split(/;(.*)/s); // `s` is the modifier for single-line mode
+                // 'G0 X2 Y50 ' > 'G0 X2 Y50'
+                line = ensureString(parts[0]).trim();                
 
           if (line[0] === '%') {
             // %wait
@@ -214,11 +217,8 @@ class GrblController {
             return '';
           }
 
-          // line="G0 X[posx - 8] Y[ymax]"
-          // > "G0 X2 Y50"
-          line = translateExpression(line, context);
-          const data = parser.parseLine(line, { flatten: true });
-          const words = ensureArray(data.words);
+                const data = parser.parseLine(line, { flatten: true });
+                const words = ensureArray(data.words);
 
           { // Program Mode: M0, M1
             const programMode = _.intersection(words, ['M0', 'M1'])[0];
@@ -275,19 +275,22 @@ class GrblController {
       this.feeder.on('hold', noop);
       this.feeder.on('unhold', noop);
 
-      // Sender
-      this.sender = new Sender(SP_TYPE_CHAR_COUNTING, {
-        // Deduct the buffer size to prevent from buffer overrun
-        bufferSize: (128 - 8), // The default buffer size is 128 bytes
-        dataFilter: (line, context) => {
-          const originalLine = line;
-          /**
-                 * line = 'G0X10 ; comment text'
-                 * parts = ['G0X10 ', ' comment text', '']
+        // Sender
+        this.sender = new Sender(SP_TYPE_CHAR_COUNTING, {
+            // Deduct the buffer size to prevent from buffer overrun
+            bufferSize: (128 - 8), // The default buffer size is 128 bytes
+            dataFilter: (line, context) => {
+                context = this.populateContext(context);
+                // line="G0 X[posx - 8] Y[ymax] ; some comment"
+                // > "G0 X2 Y50 ; some comment"
+                const originalLine = translateExpression(line, context);
+                /**
+                 * line = 'G0 X2 Y50 ; some comment'
+                 * parts = ['G0 X2 Y50 ', ' some comment', '']
                  */
-          const parts = originalLine.split(/;(.*)/s); // `s` is the modifier for single-line mode
-          line = ensureString(parts[0]).trim();
-          context = this.populateContext(context);
+                const parts = originalLine.split(/;(.*)/s); // `s` is the modifier for single-line mode
+                // 'G0 X2 Y50 ' > 'G0 X2 Y50'
+                line = ensureString(parts[0]).trim(); 
 
           const { sent, received } = this.sender.state;
 
@@ -305,11 +308,8 @@ class GrblController {
             return '';
           }
 
-          // line="G0 X[posx - 8] Y[ymax]"
-          // > "G0 X2 Y50"
-          line = translateExpression(line, context);
-          const data = parser.parseLine(line, { flatten: true });
-          const words = ensureArray(data.words);
+                const data = parser.parseLine(line, { flatten: true });
+                const words = ensureArray(data.words);
 
           { // Program Mode: M0, M1
             const programMode = _.intersection(words, ['M0', 'M1'])[0];
@@ -814,8 +814,19 @@ class GrblController {
           coolant: ensureArray(modal.coolant).join('\n'),
         },
 
-        // Tool
-        tool: Number(tool) || 0,
+            // Tool
+            tool: Number(tool) || 0,
+
+            // Custom functions
+            toleranceCheck: function(diff, tolerance) {
+                let absDiff = Math.abs(diff);
+
+                if (absDiff > tolerance) {
+                    return 'M1; Out of tolerance (' + diff + ' > ' + tolerance + ')';
+                }
+
+                return '';
+            },
 
         // G-code parameters
         params: parameters,
