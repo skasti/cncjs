@@ -20,6 +20,7 @@
     "Grbl": {
         "activeState": {
             "idle": "Bereit",
+            "jog": "Joggen",
             "run": "Programmlauf",
             "hold": "Angehalten",
             "door": "Tür offen",

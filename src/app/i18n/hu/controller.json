@@ -20,7 +20,7 @@
     "Grbl": {
         "activeState": {
             "idle": "Készenlét",
-            "jog": "",
+            "jog": "Kocogás",
             "run": "Futtatás",
             "hold": "Tartás",
             "door": "Ajtó",

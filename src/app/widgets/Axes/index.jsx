@@ -179,12 +179,12 @@ class AxesWidget extends PureComponent {
             const gcode = `G10 L20 P${p} ${axis}${value}`;
             controller.command('gcode', gcode);
         },
-        jog: (params = {}) => {
-            const s = map(params, (value, letter) => ('' + letter.toUpperCase() + value)).join(' ');
-            controller.command('gcode:jog', 'G91' + s); // JOG relative
-        },
         jogStop: (params = {}) => {
             controller.command('gcode:jogStop'); // JOG STOP
+        },
+        jog: (params = {}) => {
+            const s = map(params, (value, letter) => ('' + letter.toUpperCase() + value)).join(' ');
+            controller.command('gcode:jog', 'G91' + s + ' F5000'); // JOG relative
         },
         move: (params = {}) => {
             const s = map(params, (value, letter) => ('' + letter.toUpperCase() + value)).join(' ');
@@ -336,7 +336,10 @@ class AxesWidget extends PureComponent {
                 this.actions.selectAxis(axis);
             }
         },
-        JOG: (event, { axis = null, direction = 1, factor = 1 }) => {
+        JOG_STOP: async (event, {}) => {
+            this.actions.jogStop();
+        },
+        JOG: async (event, { axis = null, direction = 1, factor = 1 }) => {
             const { canClick, jog } = this.state;
 
             if (!canClick) {
@@ -365,9 +368,6 @@ class AxesWidget extends PureComponent {
             }[axis];
 
             jogAxis && jogAxis();
-        },
-        JOG_STOP: (event, {}) => {
-            this.actions.jogStop();
         },
         JOG_LEVER_SWITCH: (event, { key = '' }) => {
             if (key === '-') {
