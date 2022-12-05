@@ -1081,13 +1081,16 @@ class GrblController {
     }
 
     command(cmd, ...args) {
-      const handler = {
-        'gcode:load': () => {
-          let [name, gcode, context = {}, callback = noop] = args;
-          if (typeof context === 'function') {
-            callback = context;
-            context = {};
-          }
+        const handler = {
+            'gcode:jogStop': async () => {
+                this.write('\x85'); // JOG STOP
+            },
+            'gcode:load': () => {
+                let [name, gcode, context = {}, callback = noop] = args;
+                if (typeof context === 'function') {
+                    callback = context;
+                    context = {};
+                }
 
           // G4 P0 or P with a very small value will empty the planner queue and then
           // respond with an ok when the dwell is complete. At that instant, there will
@@ -1332,13 +1335,6 @@ class GrblController {
             'gcode:jog': () => {
                 const [command] = args;
                 this.writeln('$J=' + command);
-            },
-            'gcode:jogStop': async () => {
-                activeState = _.get(this.state, 'status.activeState', '');
-                if (activeState === GRBL_ACTIVE_STATE_JOG) {
-                    this.event.trigger('gcode:jogStop');
-                    this.write('\x85'); // JOG STOP
-                }
             },
             'macro:run': () => {
                 let [id, context = {}, callback = noop] = args;
