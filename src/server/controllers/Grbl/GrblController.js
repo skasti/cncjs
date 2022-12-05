@@ -1056,7 +1056,7 @@ class GrblController {
 
     command(cmd, ...args) {
         const handler = {
-            'gcode:jogStop': async () => {
+            'gcode:jogStop': () => {
                 this.write('\x85'); // JOG STOP
             },
             'gcode:load': () => {
