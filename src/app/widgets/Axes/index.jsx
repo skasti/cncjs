@@ -336,10 +336,10 @@ class AxesWidget extends PureComponent {
                 this.actions.selectAxis(axis);
             }
         },
-        JOG_STOP: async (event, {}) => {
+        JOG_STOP: () => {
             this.actions.jogStop();
         },
-        JOG: async (event, { axis = null, direction = 1, factor = 1 }) => {
+        JOG: (event, { axis = null, direction = 1, factor = 1 }) => {
             const { canClick, jog } = this.state;
 
         if (!canClick) {
