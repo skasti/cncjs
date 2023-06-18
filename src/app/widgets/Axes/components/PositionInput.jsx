@@ -39,22 +39,22 @@ class PositionInput extends PureComponent {
       } = this.props;
       const isNumber = (this.state.value !== '');
 
-      return (
-        <div
-          className={cx(className, 'input-group', 'input-group-xs')}
-          style={{ ...style, width: '100%' }}
-        >
-          <input
-            ref={node => {
-              this.node = node;
-            }}
-            type="number"
-            className="form-control"
-            placeholder=""
-            style={{ borderRight: 'none' }}
-            value={this.state.value}
-            onChange={(event) => {
-              let value = event.target.value;
+        return (
+            <div
+                className={cx(className, 'input-group', 'input-group-s')}
+                style={{ ...style, width: '100%' }}
+            >
+                <input
+                    ref={node => {
+                        this.node = node;
+                    }}
+                    type="number"
+                    className="form-control"
+                    placeholder=""
+                    style={{ borderRight: 'none' }}
+                    value={this.state.value}
+                    onChange={(event) => {
+                        let value = event.target.value;
 
               if (value === '') {
                 this.setState({ value: '' });

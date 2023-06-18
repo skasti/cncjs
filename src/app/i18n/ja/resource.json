@@ -504,8 +504,6 @@
     "Choose a video device": "ビデオデバイスを選択",
     "Automatic detection": "自動検出",
     "Front View": "正面",
-    "Move Backward": "奥に移動",
-    "Move Forward": "手前に移動",
     "Top View": "俯瞰視点",
     "Zoom to Fit": "自動ズーム",
     "Right Side View": "右側視点",
@@ -539,5 +537,6 @@
     "Set RTS line status upon opening": "開くときにRTSラインの状態を設定する",
     "Use RTS/CTS flow control": "RTS/CTSフロー制御を使用する",
     "G-code: Tool change": "",
-    "Run macro (by name)": ""
+    "Run macro (by name)": "",
+    "Half Work Offsets": ""
 }

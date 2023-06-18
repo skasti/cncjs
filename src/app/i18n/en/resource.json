@@ -504,8 +504,6 @@
     "Choose a video device": "Choose a video device",
     "Automatic detection": "Automatic detection",
     "Front View": "Front View",
-    "Move Backward": "Move Backward",
-    "Move Forward": "Move Forward",
     "Top View": "Top View",
     "Zoom to Fit": "Zoom to Fit",
     "Right Side View": "Right Side View",
@@ -539,5 +537,6 @@
     "Set RTS line status upon opening": "Set RTS line status upon opening",
     "Use RTS/CTS flow control": "Use RTS/CTS flow control",
     "G-code: Tool change": "G-code: Tool change",
-    "Run macro (by name)": "Run macro (by name)"
+    "Run macro (by name)": "Run macro (by name)",
+    "Half Work Offsets": "Half Work Offsets"
 }

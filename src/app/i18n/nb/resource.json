@@ -504,8 +504,6 @@
     "Choose a video device": "Velg en videoenhet",
     "Automatic detection": "Automatisk deteksjon",
     "Front View": "Forfra",
-    "Move Backward": "Flytt bakover",
-    "Move Forward": "Flytt forover",
     "Top View": "Ovenfra",
     "Zoom to Fit": "Zoom så det passer",
     "Right Side View": "Høyresidevisning",
@@ -540,4 +538,5 @@
     "Use RTS/CTS flow control": "Bruk RTS/CTS strømstyring",
     "G-code: Tool change": "",
     "Run macro (by name)": "",
+    "Half Work Offsets": ""
 }

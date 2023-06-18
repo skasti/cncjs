@@ -503,8 +503,6 @@
     "No video devices available": "Não há dispositivos de vídeo disponíveis",
     "Choose a video device": "Escolha um dispositivo de vídeo",
     "Automatic detection": "Detecção automática",
-    "Move Backward": "",
-    "Move Forward": "",
     "Top View": "",
     "Front View": "",
     "Zoom to Fit": "",
@@ -540,4 +538,5 @@
     "Use RTS/CTS flow control": "Use o controlo de fluxo RTS/CTS",
     "G-code: Tool change": "",
     "Run macro (by name)": "",
+    "Half Work Offsets": ""
 }

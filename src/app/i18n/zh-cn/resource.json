@@ -504,8 +504,6 @@
     "Choose a video device": "",
     "Automatic detection": "",
     "Front View": "",
-    "Move Backward": "",
-    "Move Forward": "",
     "Top View": "",
     "Zoom to Fit": "",
     "Right Side View": "",
@@ -534,10 +532,11 @@
     "Connect to an IP camera": "",
     "The URL should point to a stream in one of the following formats: Motion JPEG (mjpeg), RTSP, or H264 (MP4).": "",
     "G-code: Tool change": "",
-    "Run macro (by name)": "",,
+    "Run macro (by name)": "",
     "Set DTR line status upon opening": "打开时设置DTR线路状态",
     "SET": "设置",
     "CLR": "清除",
     "Set RTS line status upon opening": "打开时设置RTS线路状态",
-    "Use RTS/CTS flow control": "使用RTS/CTS流控制"
+    "Use RTS/CTS flow control": "使用RTS/CTS流控制",
+    "Half Work Offsets": ""
 }

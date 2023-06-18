@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 const TaskbarButton = styled.button`
     display: inline-block;
-    margin: 4px;
-    padding: 2px 5px;
+    margin: 6px;
+    padding: 2px 7px;
     border: 0;
     font-weight: normal;
     line-height: 0;

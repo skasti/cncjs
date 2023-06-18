@@ -504,8 +504,6 @@
     "Choose a video device": "Selecteer een videoapparaat",
     "Automatic detection": "automatische detectie",
     "Front View": "Vooraanzicht",
-    "Move Backward": "Beweeg naar achteren",
-    "Move Forward": "Beweeg naar voren",
     "Top View": "Bovenaanzicht",
     "Zoom to Fit": "Inzoomen totdat het past",
     "Right Side View": "Rechter zijaanzicht",
@@ -540,4 +538,5 @@
     "Use RTS/CTS flow control": "Gebruik RTS/CTS-stroomregeling",
     "G-code: Tool change": "",
     "Run macro (by name)": "",
+    "Half Work Offsets": ""
 }

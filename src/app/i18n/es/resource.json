@@ -504,8 +504,6 @@
     "Choose a video device": "",
     "Automatic detection": "",
     "Front View": "",
-    "Move Backward": "",
-    "Move Forward": "",
     "Top View": "",
     "Zoom to Fit": "",
     "Right Side View": "",
@@ -540,4 +538,5 @@
     "Use RTS/CTS flow control": "Utilice control de flujo RTS/CTS",
     "G-code: Tool change": "",
     "Run macro (by name)": "",
+    "Half Work Offsets": ""
 }
