@@ -231,10 +231,10 @@ class GrblController {
             }
           }
 
-          // M6 Tool Change
-          if (_.includes(words, 'M6')) {
-            log.debug('M6 Tool Change');
-            this.feeder.hold({ data: 'M6', msg: originalLine }); // Hold reason
+                // M6 Tool Change
+                if (_.includes(words, 'M6')) {
+                    log.debug('M6 Tool Change');
+                    this.feeder.hold({ data: 'M6', msg: 'feeder ' + originalLine }); // Hold reason
 
             // Surround M6 with parentheses to ignore
             // unsupported command error. If we nuke the whole
@@ -332,13 +332,13 @@ class GrblController {
           if (_.includes(words, 'M6')) {
             log.debug(`M6 Tool Change: line=${sent + 1}, sent=${sent}, received=${received}`);
 
-            this.event.trigger('gcode:pause');
+                    this.event.trigger('gcode:pause');
+                    this.workflow.pause({ data: 'M6', msg: 'sender ' + originalLine });
 
-            this.workflow.pause({ data: 'M6', msg: originalLine });
-
-            // Surround M6 with parentheses to ignore unsupported command error
-            line = line.replace('M6', '(M6)');
-          }
+                    // Surround M6 with parentheses to ignore unsupported command error
+                    line = line.replace('M6', '(M6)');
+                    this.event.trigger('gcode:toolchange');
+                }
 
           return line;
         }
