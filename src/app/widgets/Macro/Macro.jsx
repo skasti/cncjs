@@ -22,8 +22,9 @@ class Macro extends PureComponent {
     };
 
     handleRunMacro = (macro) => (event) => {
-      const { actions } = this.props;
-      actions.openRunMacroModal(macro.id);
+        const { actions } = this.props;
+        actions.runMacro(macro.id, { name: macro.name });
+        //actions.openRunMacroModal(macro.id);
     };
 
     handleLoadMacro = (macro) => (event) => {
@@ -77,65 +78,56 @@ class Macro extends PureComponent {
       const canRunMacro = canClick && includes([WORKFLOW_STATE_IDLE, WORKFLOW_STATE_PAUSED], workflow.state);
       const canLoadMacro = canClick && includes([WORKFLOW_STATE_IDLE], workflow.state);
 
-      return (
-        <div>
-          <div className={styles.tableContainer}>
-            <table className={styles.table}>
-              <tbody>
-                {macros.length === 0 && (
-                  <tr>
-                    <td colSpan="2">
-                      <div className={styles.emptyResult}>
-                        {i18n._('No macros')}
-                      </div>
-                    </td>
-                  </tr>
-                )}
-                {ensureArray(macros).map((macro, index) => (
-                  <tr key={macro.id}>
-                    <td>
-                      <Button
-                        compact
-                        btnSize="xs"
-                        btnStyle="flat"
-                        disabled={!canRunMacro}
-                        onClick={this.handleRunMacro(macro)}
-                        title={i18n._('Run Macro')}
-                      >
-                        <i className="fa fa-play" />
-                      </Button>
-                      <Space width="8" />
-                      {macro.name}
-                    </td>
-                    <td style={{ width: '1%' }}>
-                      <div className="nowrap">
-                        <Button
-                          compact
-                          btnSize="xs"
-                          btnStyle="flat"
-                          disabled={!canLoadMacro}
-                          onClick={this.handleLoadMacro(macro)}
-                          title={i18n._('Load Macro')}
-                        >
-                          <i className="fa fa-chevron-up" />
-                        </Button>
-                        <Button
-                          compact
-                          btnSize="xs"
-                          btnStyle="flat"
-                          onClick={this.handleEditMacro(macro)}
-                        >
-                          <i className="fa fa-edit" />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      );
+        return (
+            <div>
+                <div className={styles.tableContainer}>
+                    <table className={styles.table}>
+                        <tbody>
+                            {macros.length === 0 && (
+                                <tr>
+                                    <td colSpan="2">
+                                        <div className={styles.emptyResult}>
+                                            {i18n._('No macros')}
+                                        </div>
+                                    </td>
+                                </tr>
+                            )}
+                            {ensureArray(macros).map((macro, index) => (
+                                <tr key={macro.id}>
+                                    <td>
+                                        <Button
+                                            compact
+                                            btnSize="s"
+                                            btnStyle="flat"
+                                            disabled={!canRunMacro}
+                                            onClick={this.handleRunMacro(macro)}
+                                            title={i18n._('Run Macro')}
+                                        >
+                                            <i className="fa fa-play" />
+                                        </Button>
+                                    </td>
+                                    <td style={{ fontSize:"16px" }}>
+                                        {macro.name}
+                                    </td>
+                                    <td style={{ width: '1%' }}>
+                                        <div className="nowrap">
+                                            <Button
+                                                compact
+                                                btnSize="s"
+                                                btnStyle="flat"
+                                                onClick={this.handleEditMacro(macro)}
+                                            >
+                                                <i className="fa fa-edit" />
+                                            </Button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        );
     }
 }
 
