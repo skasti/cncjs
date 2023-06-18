@@ -223,16 +223,18 @@ class GrblController {
                 const data = parser.parseLine(line, { flatten: true });
                 const words = ensureArray(data.words);
 
-          { // Program Mode: M0, M1
-            const programMode = _.intersection(words, ['M0', 'M1'])[0];
-            if (programMode === 'M0') {
-              log.debug('M0 Program Pause');
-              this.feeder.hold({ data: 'M0', msg: originalLine }); // Hold reason
-            } else if (programMode === 'M1') {
-              log.debug('M1 Program Pause');
-              this.feeder.hold({ data: 'M1', msg: originalLine }); // Hold reason
-            }
-          }
+                { // Program Mode: M0, M1
+                    const programMode = _.intersection(words, ['M0', 'M1'])[0];
+                    if (programMode === 'M0') {
+                        log.debug('M0 Program Pause');
+                        this.feeder.hold({ data: 'M0', msg: originalLine }); // Hold reason
+                        line = "(M0)"
+                    } else if (programMode === 'M1') {
+                        log.debug('M1 Program Pause');
+                        this.feeder.hold({ data: 'M1', msg: originalLine }); // Hold reason
+                        line = "(M1)"
+                    }
+                }
 
                 // M6 Tool Change
                 if (_.includes(words, 'M6')) {
@@ -314,22 +316,20 @@ class GrblController {
                 const data = parser.parseLine(line, { flatten: true });
                 const words = ensureArray(data.words);
 
-          { // Program Mode: M0, M1
-            const programMode = _.intersection(words, ['M0', 'M1'])[0];
-            if (programMode === 'M0') {
-              log.debug(`M0 Program Pause: line=${sent + 1}, sent=${sent}, received=${received}`);
-
-              this.event.trigger('gcode:pause');
-
-              this.workflow.pause({ data: 'M0', msg: originalLine });
-            } else if (programMode === 'M1') {
-              log.debug(`M1 Program Pause: line=${sent + 1}, sent=${sent}, received=${received}`);
-
-              this.event.trigger('gcode:pause');
-
-              this.workflow.pause({ data: 'M1', msg: originalLine });
-            }
-          }
+                { // Program Mode: M0, M1
+                    const programMode = _.intersection(words, ['M0', 'M1'])[0];
+                    if (programMode === 'M0') {
+                        log.debug(`M0 Program Pause: line=${sent + 1}, sent=${sent}, received=${received}`);
+                        this.event.trigger('gcode:pause');
+                        this.workflow.pause({ data: 'M0', msg: originalLine });
+                        line = "(M0)"
+                    } else if (programMode === 'M1') {
+                        log.debug(`M1 Program Pause: line=${sent + 1}, sent=${sent}, received=${received}`);
+                        this.event.trigger('gcode:pause');
+                        this.workflow.pause({ data: 'M1', msg: originalLine });
+                        line = "(M1)"
+                    }
+                }
 
           // M6 Tool Change
           if (_.includes(words, 'M6')) {
