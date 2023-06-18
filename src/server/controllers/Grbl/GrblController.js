@@ -37,6 +37,7 @@ import {
   GRBL_ERRORS,
   GRBL_SETTINGS
 } from './constants';
+import { macros } from '../../api';
 
 // % commands
 const WAIT = '%wait';
@@ -179,15 +180,17 @@ class GrblController {
         }
       });
 
-      // Event Trigger
-      this.event = new EventTrigger((event, trigger, commands) => {
-        log.debug(`EventTrigger: event="${event}", trigger="${trigger}", commands="${commands}"`);
-        if (trigger === 'system') {
-          taskRunner.run(commands);
-        } else {
-          this.command('gcode', commands);
-        }
-      });
+        // Event Trigger
+        this.event = new EventTrigger((event, trigger, commands) => {
+            log.debug(`EventTrigger: event="${event}", trigger="${trigger}", commands="${commands}"`);
+            if (trigger === 'system') {
+                taskRunner.run(commands);
+            } else if (trigger === 'macro') {
+                this.command('macro:run', commands);
+            } else {
+                this.command('gcode', commands);
+            }
+        });
 
         // Feeder
         this.feeder = new Feeder({
@@ -1354,13 +1357,17 @@ class GrblController {
                     context = {};
                 }
 
-          const macros = config.get('macros');
-          const macro = _.find(macros, { id: id });
+                const macros = config.get('macros');
+                var macro = _.find(macros, { id: id });
 
-          if (!macro) {
-            log.error(`Cannot find the macro: id=${id}`);
-            return;
-          }
+                if (!macro) {
+                    macro = _.find(macros, { name: id });
+
+                    if (!macro) {
+                        log.error(`Cannot find the macro: id/name=${id}`);
+                        return;
+                    }
+                }
 
           this.event.trigger('macro:run');
 
