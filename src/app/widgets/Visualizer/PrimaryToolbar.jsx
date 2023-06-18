@@ -234,35 +234,35 @@ class PrimaryToolbar extends PureComponent {
       const canToggleOptions = WebGL.isWebGLAvailable() && !disabled;
       const wcs = this.getWorkCoordinateSystem();
 
-      return (
-        <div className={styles.primaryToolbar}>
-          {this.renderControllerType()}
-          {this.renderControllerState()}
-          <div className="pull-right">
-            <Dropdown
-              style={{ marginRight: 5 }}
-              disabled={!canSendCommand}
-              pullRight
-            >
-              <Dropdown.Toggle
-                btnSize="sm"
-                title={i18n._('Work Coordinate System')}
-              >
-                {wcs === 'G54' && `${wcs} (P1)`}
-                {wcs === 'G55' && `${wcs} (P2)`}
-                {wcs === 'G56' && `${wcs} (P3)`}
-                {wcs === 'G57' && `${wcs} (P4)`}
-                {wcs === 'G58' && `${wcs} (P5)`}
-                {wcs === 'G59' && `${wcs} (P6)`}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <MenuItem header>{i18n._('Work Coordinate System')}</MenuItem>
-                <MenuItem
-                  active={wcs === 'G54'}
-                  onSelect={() => {
-                    controller.command('gcode', 'G54');
-                  }}
-                >
+        return (
+            <div className={styles.primaryToolbar}>
+                {this.renderControllerType()}
+                {this.renderControllerState()}
+                <div className="pull-right">
+                    <Dropdown
+                        style={{ marginRight: 5 }}
+                        disabled={!canSendCommand}
+                        pullRight
+                    >
+                        <Dropdown.Toggle
+                            btnSize="lg"
+                            title={i18n._('Work Coordinate System')}
+                        >
+                            {wcs === 'G54' && `${wcs} (P1)`}
+                            {wcs === 'G55' && `${wcs} (P2)`}
+                            {wcs === 'G56' && `${wcs} (P3)`}
+                            {wcs === 'G57' && `${wcs} (P4)`}
+                            {wcs === 'G58' && `${wcs} (P5)`}
+                            {wcs === 'G59' && `${wcs} (P6)`}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <MenuItem header>{i18n._('Work Coordinate System')}</MenuItem>
+                            <MenuItem
+                                active={wcs === 'G54'}
+                                onSelect={() => {
+                                    controller.command('gcode', 'G54');
+                                }}
+                            >
                                 G54 (P1)
                 </MenuItem>
                 <MenuItem
@@ -304,37 +304,37 @@ class PrimaryToolbar extends PureComponent {
                   }}
                 >
                                 G59 (P6)
-                </MenuItem>
-              </Dropdown.Menu>
-            </Dropdown>
-            <Dropdown
-              pullRight
-            >
-              <Button
-                btnSize="sm"
-                btnStyle="flat"
-                title={(!WebGL.isWebGLAvailable() || disabled)
-                  ? i18n._('Enable 3D View')
-                  : i18n._('Disable 3D View')
-                }
-                onClick={actions.toggle3DView}
-              >
-                {(!WebGL.isWebGLAvailable() || disabled)
-                  ? <i className="fa fa-toggle-off" />
-                  : <i className="fa fa-toggle-on" />
-                }
-                {i18n._('3D View')}
-              </Button>
-              <Dropdown.Toggle btnSize="sm" />
-              <Dropdown.Menu>
-                <MenuItem
-                  style={{ color: '#222' }}
-                  header
-                >
-                  {WebGL.isWebGLAvailable() && (
-                    <I18n>
-                      {'WebGL: '}
-                      <span style={{ color: colornames('royalblue') }}>
+                            </MenuItem>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <Dropdown
+                        pullRight
+                    >
+                        <Button
+                            btnSize="lg"
+                            btnStyle="flat"
+                            title={(!WebGL.isWebGLAvailable() || disabled)
+                                ? i18n._('Enable 3D View')
+                                : i18n._('Disable 3D View')
+                            }
+                            onClick={actions.toggle3DView}
+                        >
+                            {(!WebGL.isWebGLAvailable() || disabled)
+                                ? <i className="fa fa-toggle-off" />
+                                : <i className="fa fa-toggle-on" />
+                            }
+                            {i18n._('3D View')}
+                        </Button>
+                        <Dropdown.Toggle btnSize="lg" />
+                        <Dropdown.Menu>
+                            <MenuItem
+                                style={{ color: '#222' }}
+                                header
+                            >
+                                {WebGL.isWebGLAvailable() && (
+                                    <I18n>
+                                        {'WebGL: '}
+                                        <span style={{ color: colornames('royalblue') }}>
                                         Enabled
                       </span>
                     </I18n>
