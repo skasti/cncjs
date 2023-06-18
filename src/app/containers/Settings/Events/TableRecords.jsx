@@ -20,22 +20,23 @@ import {
 import styles from './index.styl';
 
 const mapEventToTextString = (event) => ({
-  'startup': i18n._('Startup (System only)'),
-  'port:open': i18n._('Open a serial port (System only)'),
-  'port:close': i18n._('Close a serial port (System only)'),
-  'controller:ready': i18n._('Ready to start'),
-  'gcode:load': i18n._('G-code: Load'),
-  'gcode:unload': i18n._('G-code: Unload'),
-  'gcode:start': i18n._('G-code: Start'),
-  'gcode:stop': i18n._('G-code: Stop'),
-  'gcode:pause': i18n._('G-code: Pause'),
-  'gcode:resume': i18n._('G-code: Resume'),
-  'feedhold': i18n._('Feed Hold'),
-  'cyclestart': i18n._('Cycle Start'),
-  'homing': i18n._('Homing'),
-  'sleep': i18n._('Sleep'),
-  'macro:run': i18n._('Run Macro'),
-  'macro:load': i18n._('Load Macro')
+    'startup': i18n._('Startup (System only)'),
+    'port:open': i18n._('Open a serial port (System only)'),
+    'port:close': i18n._('Close a serial port (System only)'),
+    'controller:ready': i18n._('Ready to start'),
+    'gcode:load': i18n._('G-code: Load'),
+    'gcode:unload': i18n._('G-code: Unload'),
+    'gcode:start': i18n._('G-code: Start'),
+    'gcode:stop': i18n._('G-code: Stop'),
+    'gcode:pause': i18n._('G-code: Pause'),
+    'gcode:resume': i18n._('G-code: Resume'),
+    'gcode:toolchange': i18n._('G-code: Tool change'),
+    'feedhold': i18n._('Feed Hold'),
+    'cyclestart': i18n._('Cycle Start'),
+    'homing': i18n._('Homing'),
+    'sleep': i18n._('Sleep'),
+    'macro:run': i18n._('Run Macro'),
+    'macro:load': i18n._('Load Macro')
 }[event] || '');
 
 class TableRecords extends PureComponent {
@@ -145,9 +146,13 @@ class TableRecords extends PureComponent {
                   return <span>{i18n._('System')}</span>;
                 }
 
-                if (trigger === 'gcode') {
-                  return <span>{i18n._('G-code')}</span>;
-                }
+                            if (trigger === 'gcode') {
+                                return <span>{i18n._('G-code')}</span>;
+                            }
+
+                            if (trigger === 'macro') {
+                                return <span>{i18n._('Run macro (by name)')}</span>;
+                            }
 
                 return '–';
               }

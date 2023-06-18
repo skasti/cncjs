@@ -537,5 +537,7 @@
     "SET": "NASTAVIT",
     "CLR": "VYMAZAT",
     "Set RTS line status upon opening": "Nastavit stav řádky RTS při otevírání",
-    "Use RTS/CTS flow control": "Použijte řízení toku RTS/CTS"
+    "Use RTS/CTS flow control": "Použijte řízení toku RTS/CTS",
+    "G-code: Tool change": "",
+    "Run macro (by name)": "",
 }
