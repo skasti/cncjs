@@ -56,7 +56,8 @@
     "stylint": "stylint src/app",
     "test": "tap test/*.js --no-timeout --node-arg=--require --node-arg=@babel/register --node-arg=--require --node-arg=@babel/polyfill",
     "coveralls": "tap test/*.js --coverage --coverage-report=text-lcov --nyc-arg=--require --nyc-arg=@babel/register --nyc-arg=--require --nyc-arg=@babel/polyfill",
-    "postinstall": "opencollective postinstall"
+    "postinstall": "opencollective postinstall",
+    "my-build": "npm run prebuild-prod && npm run build-prod && npm run build:windows-x64"
   },
   "build": {
     "appId": "org.cncjs",

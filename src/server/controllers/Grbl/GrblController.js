@@ -23,9 +23,10 @@ import monitor from '../../services/monitor';
 import taskRunner from '../../services/taskrunner';
 import store from '../../store';
 import {
-  GLOBAL_OBJECTS as globalObjects,
-  WRITE_SOURCE_CLIENT,
-  WRITE_SOURCE_FEEDER
+    GLOBAL_OBJECTS as globalObjects,
+    WRITE_SOURCE_CLIENT,
+    WRITE_SOURCE_FEEDER,
+    WRITE_SOURCE_SENDER
 } from '../constants';
 import GrblRunner from './GrblRunner';
 import {
@@ -335,12 +336,41 @@ class GrblController {
           if (_.includes(words, 'M6')) {
             log.debug(`M6 Tool Change: line=${sent + 1}, sent=${sent}, received=${received}`);
 
-                    this.event.trigger('gcode:pause');
-                    this.workflow.pause({ data: 'M6', msg: 'sender ' + originalLine });
+                    try {
+                        const nextTool = words.find(word => word.indexOf("T") === 0)
+
+                        if (nextTool != undefined) {
+                            if (context.global.toolChange == undefined) {
+                                context.global.toolChange = {
+                                    next: Number(nextTool.substring(1)),
+                                    current: -1
+                                }
+                            } else {
+                                context.global.toolChange.next = nextTool.substring(1)
+                            }
+
+                            if (context.global.toolChange.next != context.global.toolChange.current) {
+                                this.event.trigger('gcode:pause');
+                                this.workflow.pause({ data: 'M6', msg: 'sender ' + originalLine });
+                                this.event.trigger('gcode:toolchange');
+                            }
+                        } else {
+                            line = line + '(next tool not defined in words ' + JSON.stringify(words) + ')'
+                            this.event.trigger('gcode:pause');
+                            this.workflow.pause({ data: 'M6', msg: 'sender ' + originalLine });
+                            this.event.trigger('gcode:toolchange');
+                        }
+                    } catch (ex) {
+                        console.debug('error during tool change: ' + ex, ex)
+                        log.error('error during tool change: ' + ex)
+                        line = line + '(' + ex.message + ')'
+                        this.event.trigger('gcode:pause');
+                        this.workflow.pause({ data: 'M6', msg: 'sender ' + originalLine });
+                        this.event.trigger('gcode:toolchange');
+                    }
 
                     // Surround M6 with parentheses to ignore unsupported command error
                     line = line.replace('M6', '(M6)');
-                    this.event.trigger('gcode:toolchange');
                 }
 
           return line;
@@ -357,11 +387,19 @@ class GrblController {
           return;
         }
 
-        line = String(line).trim();
-        if (line.length === 0) {
-          log.warn(`Expected non-empty line: N=${this.sender.state.sent}`);
-          return;
-        }
+            line = String(line).trim();
+            if (line.length === 0) {
+                log.warn(`Expected non-empty line: N=${this.sender.state.sent}`);
+                return;
+            }
+
+            if (line.indexOf('(') >= 0) {
+                this.emit('serialport:write', line + '\n', {
+                    ...context,
+                    source: WRITE_SOURCE_SENDER
+                });
+            }
+
 
         this.connection.write(line + '\n');
         log.silly(`> ${line}`);

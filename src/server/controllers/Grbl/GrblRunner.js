@@ -221,6 +221,10 @@ class GrblRunner extends events.EventEmitter {
       return Number(_.get(state, 'parserstate.tool')) || 0;
     }
 
+    setTool(newTool) {
+        this.state.parserstate.tool = newTool
+    }
+
     getParameters() {
       return _.get(this.settings, 'parameters', {});
     }
