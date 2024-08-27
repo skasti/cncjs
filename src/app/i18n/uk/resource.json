@@ -267,8 +267,6 @@
     "deg": "",
     "Zero Out Machine": "Обнулення машинних координат",
     "Home Machine": "Переміщення в робочий нуль по машинних координатах",
-    "Move Backward": "Переміщення назад",
-    "Move Forward": "Переміщення вперед",
     "Zero Out Work Offsets": "Обнулення робочих координат",
     "Set Work Offsets": "Встановлення робочих координат",
     "Axis": "Вісь",
@@ -537,5 +535,8 @@
     "Flip Horizontally": "Перевернути по горизонталі",
     "Flip Vertically": "Перевернути по вертикалі",
     "Crosshair": "Перехрестя",
-    "Marlin Widget": "Віджет Marlin"
+    "Marlin Widget": "Віджет Marlin",
+    "G-code: Tool change": "",
+    "Run macro (by name)": "",
+    "Half Work Offsets": ""
 }
